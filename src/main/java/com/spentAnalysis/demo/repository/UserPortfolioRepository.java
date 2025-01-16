@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface UserPortfolioRepository extends JpaRepository<UserPortfolio,Long> {
     List<UserPortfolio> findByUserAndStockOrderByCreatedAtAsc(User user, Stock stock);
-
+    List<UserPortfolio> findByUser_UserId(int userId);
 }
