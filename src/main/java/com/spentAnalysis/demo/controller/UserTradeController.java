@@ -31,7 +31,6 @@ public class UserTradeController {
             @PathVariable("stockId") Long stockId,
             @PathVariable("userId") int userId
     ){
-
         return new ResponseEntity<>(userHoldingService.addUserHolding(userTradeDto,stockId,userId),HttpStatus.OK);
     }
 

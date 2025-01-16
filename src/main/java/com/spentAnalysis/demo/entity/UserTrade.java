@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 public class UserTrade {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
-    private Long holdingId;
+    private Long tradeId;
 
     @ManyToOne
     @JoinColumn(name = "userId", referencedColumnName = "userId",
