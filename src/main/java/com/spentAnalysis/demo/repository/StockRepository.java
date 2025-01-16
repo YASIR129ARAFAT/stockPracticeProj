@@ -7,7 +7,9 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public interface StockRepository extends JpaRepository<Stock,String> {
-//    Optional<Stock> findByStockId(String stockId);
-        Optional<Stock> findByStockIdAndRecordedAt(String stockId, LocalDate recordedDate);
+
+    Optional<Stock> findByStockIsinAndRecordedAt(String stockIsin, LocalDate recordedAt);
+    Optional <Stock> findByStockId(Long stockId);
+    Optional<Stock> findByStockIdAndRecordedAt(Long stockId, LocalDate recordedAt);
 
 }

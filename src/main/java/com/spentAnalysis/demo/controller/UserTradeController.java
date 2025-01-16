@@ -28,7 +28,7 @@ public class UserTradeController {
     @PostMapping("/addUserTrade/{stockId}/{userId}")
     public ResponseEntity<?> addUserHolding(
             @RequestBody UserTradeDto userTradeDto,
-            @PathVariable("stockId") String stockId,
+            @PathVariable("stockId") Long stockId,
             @PathVariable("userId") int userId
     ){
 

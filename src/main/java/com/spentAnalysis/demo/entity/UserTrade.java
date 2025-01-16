@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Entity
 @NoArgsConstructor
-@Table(name = "user_holdings")
+@Table(name = "user_trade")
 public class UserTrade {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)

@@ -22,7 +22,7 @@ public class UserController {
         User newUser = userService.addUser(user);
         return new ResponseEntity<>(newUser,HttpStatus.OK);
     }
-    @GetMapping("/id/{userId}")
+    @GetMapping("/getUserByUserId/{userId}")
     public ResponseEntity<?> findUserById(@PathVariable("userId") int userId){
 
         Optional<User> user = userService.findUserById(userId);

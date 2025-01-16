@@ -18,14 +18,17 @@ import java.time.LocalDateTime;
 @Table(name = "stocks")
 public class Stock {
     @Id
-    @Column(name="stockId",nullable = false,unique = true)
-    private String stockId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long stockId;
 
-    @Column(name = "name",nullable = false)
+    @Column(name="stockIsin", nullable = false)
+    private String stockIsin;
+
+    @Column(name = "stockName",nullable = false)
     private String stockName;
 
     @Embedded
-    @Column(name = "price",nullable = false, columnDefinition = "json")
+    @Column(name = "stockPrice",nullable = false, columnDefinition = "json")
     private PricesDto stockPrice;
 
     @CreationTimestamp

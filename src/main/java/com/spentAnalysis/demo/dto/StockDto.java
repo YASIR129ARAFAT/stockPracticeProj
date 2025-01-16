@@ -8,7 +8,8 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 public class StockDto {
-    private String stockId;
+    private Long stockId;
+    private String stockIsin;
     private String stockName;
     private BigDecimal highPrice;
     private BigDecimal lowPrice;

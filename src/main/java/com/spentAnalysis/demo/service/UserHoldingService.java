@@ -37,13 +37,13 @@ public class UserHoldingService {
     @Transactional
     public UserTrade addUserHolding(
                 UserTradeDto userTradeDto,
-                String stockId,
+                Long stockId,
                 int userId
             ){
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
 
-        Stock stock = stockRepository.findById(stockId)
+        Stock stock = stockRepository.findByStockId(stockId)
                 .orElseThrow(() -> new IllegalArgumentException("Stock not found with ID: " + stockId));
 
         UserTrade userTrade = new UserTrade();

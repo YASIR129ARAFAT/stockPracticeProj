@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class TradeDto {
     private String stockName;
-    private String stockId;
+    private Long stockId;
     private int quantity;
     private BigDecimal buyPrice;
     private BigDecimal currentPrice;

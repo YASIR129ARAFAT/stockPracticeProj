@@ -22,7 +22,7 @@ public class UserService {
 
     @Transactional
     public Optional<User> findUserById(int userId){
-        return userRepository.findById(userId);
+        return userRepository.findByUserId(userId);
     }
 
 
