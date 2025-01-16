@@ -14,9 +14,9 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PricesDto {
-    private BigDecimal open;
-    private BigDecimal close;
-    private BigDecimal high;
-    private BigDecimal low;
+    private BigDecimal openPrice;
+    private BigDecimal closePrice;
+    private BigDecimal highPrice;
+    private BigDecimal lowPrice;
 
 }

@@ -1,7 +1,7 @@
 package com.spentAnalysis.demo.controller;
 
-import com.spentAnalysis.demo.dto.UserHoldingDto;
-import com.spentAnalysis.demo.entity.UserHolding;
+import com.spentAnalysis.demo.dto.UserTradeDto;
+import com.spentAnalysis.demo.entity.UserTrade;
 import com.spentAnalysis.demo.service.UserHoldingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,27 +12,27 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/userHolding")
+@RequestMapping("/userTrade")
 @RequiredArgsConstructor
-public class UserHoldingController {
+public class UserTradeController {
     @Autowired
     private final UserHoldingService userHoldingService;
 
-    @GetMapping("/getUserHolding/{userId}")
+    @GetMapping("/getUserTrade/{userId}")
     public ResponseEntity<?> getUserHolding(@PathVariable("userId") int userId){
-        List<UserHolding> userHoldingList = userHoldingService.getUserHolding(userId);
+        List<UserTrade> userTradeList = userHoldingService.getUserHolding(userId);
 
-        return new ResponseEntity<>(userHoldingList, HttpStatus.OK);
+        return new ResponseEntity<>(userTradeList, HttpStatus.OK);
     }
 
-    @PostMapping("/addUserHolding/{stockId}/{userId}")
+    @PostMapping("/addUserTrade/{stockId}/{userId}")
     public ResponseEntity<?> addUserHolding(
-            @RequestBody UserHoldingDto userHoldingDto,
+            @RequestBody UserTradeDto userTradeDto,
             @PathVariable("stockId") String stockId,
             @PathVariable("userId") int userId
     ){
 
-        return new ResponseEntity<>(userHoldingService.addUserHolding(userHoldingDto,stockId,userId),HttpStatus.OK);
+        return new ResponseEntity<>(userHoldingService.addUserHolding(userTradeDto,stockId,userId),HttpStatus.OK);
     }
 
     @GetMapping("/getUserPortfolio/{userId}")

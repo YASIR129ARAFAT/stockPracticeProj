@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Entity
 @NoArgsConstructor
 @Table(name = "user_holdings")
-public class UserHolding {
+public class UserTrade {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long holdingId;

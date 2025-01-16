@@ -17,7 +17,6 @@ public class UserController {
     @Autowired
     private final UserService userService;
 
-
     @PostMapping("/addUser")
     public ResponseEntity<?> addUser(@RequestBody User user){
         User newUser = userService.addUser(user);

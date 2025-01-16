@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class HoldingDto {
+public class TradeDto {
     private String stockName;
     private String stockId;
     private int quantity;

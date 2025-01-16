@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -22,13 +23,14 @@ public class StockService {
 
     @Transactional
     public Stock addSingleStock(StockDto stockData){
-        PricesDto price = new PricesDto(stockData.getHigh(),stockData.getLow(),stockData.getOpen(),stockData.getClose());
-        Stock stock = new Stock(stockData.getStockId(),stockData.getName(),price);
+        PricesDto price = new PricesDto(stockData.getHighPrice(),stockData.getLowPrice(),stockData.getOpenPrice(),stockData.getClosePrice());
+        Stock stock = new Stock(stockData.getStockId(),stockData.getStockName(),price,null,null,null);
         return stockRepository.save(stock);
     }
     @Transactional
     public Optional<Stock> getSingleStock(String stockId){
-        return stockRepository.findById(stockId);
+        LocalDate today = LocalDate.now();
+        return stockRepository.findByStockIdAndRecordedAt(stockId, today);
     }
 
     @Transactional
@@ -70,24 +72,23 @@ public class StockService {
                 BigDecimal closePrice = new BigDecimal(columns[columnIndices.get("ClsPric")]);  // ClosePrice
 
                 PricesDto price = new PricesDto(openPrice,closePrice,highPrice,lowPrice);
-//                Stock stock = new Stock(isin,stockName,price);
 
-                Optional<Stock> existingStockOpt = stockRepository.findByStockId(isin);
+                Optional<Stock> existingStockOpt = stockRepository.findByStockIdAndRecordedAt(isin,LocalDate.now());
 
                 if (existingStockOpt.isPresent()) {
                     // If the stock exists, update if any values have changed
                     Stock existingStock = existingStockOpt.get();
 
-                    if (!existingStock.getName().equals(stockName) ||
-                            !existingStock.getPrice().equals(price)) {
+                    if (!existingStock.getStockName().equals(stockName) ||
+                            !existingStock.getStockPrice().equals(price)) {
 
-                        existingStock.setName(stockName);
-                        existingStock.setPrice(price);
+                        existingStock.setStockName(stockName);
+                        existingStock.setStockPrice(price);
                         stockRepository.save(existingStock); // Update the stock
                     }
                 } else {
                     // If the stock does not exist, add it
-                    Stock newStock = new Stock(isin, stockName, price);
+                    Stock newStock = new Stock(isin, stockName, price,null,null,null);
                     stockRepository.save(newStock); // Save the new stock
                 }
 

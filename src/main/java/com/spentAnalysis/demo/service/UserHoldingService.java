@@ -1,11 +1,11 @@
 package com.spentAnalysis.demo.service;
 
-import com.spentAnalysis.demo.dto.HoldingDto;
-import com.spentAnalysis.demo.dto.HoldingResponseDto;
-import com.spentAnalysis.demo.dto.UserHoldingDto;
+import com.spentAnalysis.demo.dto.TradeDto;
+import com.spentAnalysis.demo.dto.TradeResponseDto;
+import com.spentAnalysis.demo.dto.UserTradeDto;
 import com.spentAnalysis.demo.entity.Stock;
 import com.spentAnalysis.demo.entity.User;
-import com.spentAnalysis.demo.entity.UserHolding;
+import com.spentAnalysis.demo.entity.UserTrade;
 import com.spentAnalysis.demo.repository.StockRepository;
 import com.spentAnalysis.demo.repository.UserHoldingRepository;
 import com.spentAnalysis.demo.repository.UserRepository;
@@ -30,13 +30,13 @@ public class UserHoldingService {
     private final StockRepository stockRepository;
 
     @Transactional
-    public List<UserHolding> getUserHolding(int userId){
+    public List<UserTrade> getUserHolding(int userId){
         return userHoldingRepository.findByUser_UserId(userId);
     }
 
     @Transactional
-    public UserHolding addUserHolding(
-                UserHoldingDto userHoldingDto,
+    public UserTrade addUserHolding(
+                UserTradeDto userTradeDto,
                 String stockId,
                 int userId
             ){
@@ -46,51 +46,51 @@ public class UserHoldingService {
         Stock stock = stockRepository.findById(stockId)
                 .orElseThrow(() -> new IllegalArgumentException("Stock not found with ID: " + stockId));
 
-        UserHolding userHolding = new UserHolding();
-        userHolding.setUser(user);
-        userHolding.setStock(stock);
-        userHolding.setTradeType(userHoldingDto.getTradeType());
-        userHolding.setQuantity(userHoldingDto.getQuantity());
-        userHolding.setBuyPrice(userHoldingDto.getBuyPrice());
+        UserTrade userTrade = new UserTrade();
+        userTrade.setUser(user);
+        userTrade.setStock(stock);
+        userTrade.setTradeType(userTradeDto.getTradeType());
+        userTrade.setQuantity(userTradeDto.getQuantity());
+        userTrade.setBuyPrice(userTradeDto.getBuyPrice());
 
-        return userHoldingRepository.save(userHolding);
+        return userHoldingRepository.save(userTrade);
 
 
     }
 
     @Transactional
-    public HoldingResponseDto getAllUserHolding(int userId){
-        List<UserHolding> userHoldingList = getUserHolding(userId);
-        List<HoldingDto> holdingDtos = new ArrayList<>();
+    public TradeResponseDto getAllUserHolding(int userId){
+        List<UserTrade> userTradeList = getUserHolding(userId);
+        List<TradeDto> tradeDtos = new ArrayList<>();
 
         BigDecimal totalPortfolioHolding = BigDecimal.ZERO;
         BigDecimal totalBuyPrice = BigDecimal.ZERO;
         BigDecimal totalCurrentPrice = BigDecimal.ZERO;
-        for(UserHolding userHolding:userHoldingList){
-            HoldingDto holdingDto = new HoldingDto();
+        for(UserTrade userTrade : userTradeList){
+            TradeDto tradeDto = new TradeDto();
 
-            holdingDto.setBuyPrice(userHolding.getBuyPrice());
-            holdingDto.setQuantity(userHolding.getQuantity());
-            holdingDto.setStockId(userHolding.getStock().getStockId());
-            holdingDto.setStockName(userHolding.getStock().getName());
-            holdingDto.setCurrentPrice(userHolding.getStock().getPrice().getClose());
-            holdingDto.setGainLoss((userHolding.getStock().getPrice().getClose()).subtract(userHolding.getBuyPrice()));
+            tradeDto.setBuyPrice(userTrade.getBuyPrice());
+            tradeDto.setQuantity(userTrade.getQuantity());
+            tradeDto.setStockId(userTrade.getStock().getStockId());
+            tradeDto.setStockName(userTrade.getStock().getStockName());
+            tradeDto.setCurrentPrice(userTrade.getStock().getStockPrice().getClosePrice());
+            tradeDto.setGainLoss((userTrade.getStock().getStockPrice().getClosePrice()).subtract(userTrade.getBuyPrice()));
 
-            holdingDtos.add(holdingDto);
+            tradeDtos.add(tradeDto);
 
-            totalBuyPrice = totalBuyPrice.add(userHolding.getBuyPrice());
-            totalPortfolioHolding = totalPortfolioHolding.add(BigDecimal.valueOf(userHolding.getQuantity()));
-            totalCurrentPrice = totalCurrentPrice.add(userHolding.getStock().getPrice().getClose());
+            totalBuyPrice = totalBuyPrice.add(userTrade.getBuyPrice());
+            totalPortfolioHolding = totalPortfolioHolding.add(BigDecimal.valueOf(userTrade.getQuantity()));
+            totalCurrentPrice = totalCurrentPrice.add(userTrade.getStock().getStockPrice().getClosePrice());
         }
 
-        HoldingResponseDto holdingResponseDto = new HoldingResponseDto();
-        holdingResponseDto.setHoldingDto(holdingDtos);
-        holdingResponseDto.setTotalPortfolioHolding(totalPortfolioHolding);
-        holdingResponseDto.setTotalBuyPrice(totalBuyPrice);
+        TradeResponseDto tradeResponseDto = new TradeResponseDto();
+        tradeResponseDto.setTradeDto(tradeDtos);
+        tradeResponseDto.setTotalPortfolioHolding(totalPortfolioHolding);
+        tradeResponseDto.setTotalBuyPrice(totalBuyPrice);
 
         BigDecimal totalProfitLossPercentage = totalCurrentPrice.subtract(totalBuyPrice).divide(totalBuyPrice,3).multiply(BigDecimal.valueOf(100));
-        holdingResponseDto.setTotalProfitLossPercentage(totalProfitLossPercentage);
+        tradeResponseDto.setTotalProfitLossPercentage(totalProfitLossPercentage);
 
-        return holdingResponseDto;
+        return tradeResponseDto;
     }
 }

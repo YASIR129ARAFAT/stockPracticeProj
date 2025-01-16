@@ -34,7 +34,7 @@ public class StockController {
         return new ResponseEntity<>(stock,HttpStatus.OK);
     }
 
-    @PostMapping("/addBulkData")
+    @PostMapping("/addStockFromCsv")
     public ResponseEntity<?> addUpdateStocks(@RequestBody MultipartFile csvFile){
         stockService.readCsvFile(csvFile);
         return new ResponseEntity<>(HttpStatus.OK);
