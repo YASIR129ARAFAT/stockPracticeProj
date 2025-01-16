@@ -1,6 +1,5 @@
 package com.spentAnalysis.demo.entity;
 
-import com.spentAnalysis.demo.enums.TradeType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,35 +10,34 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Data
-@AllArgsConstructor
 @Entity
+@Data
+@Table(name = "user_portfolio")
+@AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "user_trade")
-public class UserTrade {
+public class UserPortfolio {
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
-    private Long tradeId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long holdingId;
 
     @ManyToOne
     @JoinColumn(name = "userId", referencedColumnName = "userId",
-            foreignKey = @ForeignKey(name = "FK_Trade_User"))
+            foreignKey = @ForeignKey(name = "FK_Holding_User"))
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "stockId", referencedColumnName = "stockId",
-            foreignKey = @ForeignKey(name = "FK_Trade_Stock"))
+            foreignKey = @ForeignKey(name = "FK_Holding_Stock"))
     private Stock stock;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private TradeType tradeType;
 
     @Column(nullable = false)
     private int quantity;
 
     @Column(nullable = false)
-    private BigDecimal buyPrice;
+    private BigDecimal BuyPrice;
+
+    @Column(nullable = false)
+    private int openQuantity;
 
     @CreationTimestamp
     @Column(name = "createdAt", updatable = false, nullable = false)
@@ -48,4 +46,7 @@ public class UserTrade {
     @UpdateTimestamp
     @Column(name = "updatedAt", nullable = false)
     private LocalDateTime updatedAt;
+
+
+
 }

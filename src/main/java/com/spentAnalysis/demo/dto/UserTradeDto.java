@@ -13,5 +13,4 @@ import java.math.BigDecimal;
 public class UserTradeDto {
     private TradeType tradeType;
     private int quantity;
-    private BigDecimal buyPrice;
 }
