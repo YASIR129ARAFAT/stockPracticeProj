@@ -56,7 +56,7 @@ public class UserPortfolioController {
         BigDecimal totalGainLoss = BigDecimal.ZERO;
 
         for (UserPortfolio holding : userHoldings.values()) {
-            BigDecimal currentPrice = holding.getStock().getStockPrice().getClosePrice(); // Assuming Stock entity has currentPrice
+            BigDecimal currentPrice = holding.getStock().getStockPrice().getClosePrice();
             BigDecimal buyPrice = holding.getBuyPrice();
             BigDecimal gainLoss = currentPrice.subtract(buyPrice).multiply(new BigDecimal(holding.getQuantity()));
 

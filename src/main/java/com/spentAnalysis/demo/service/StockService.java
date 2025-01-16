@@ -39,71 +39,55 @@ public class StockService {
         return stockRepository.findByStockIsinAndRecordedAt(stockIsin, today);
     }
 
-//    @Transactional
-//    public void readCsvFile(MultipartFile csvFile) {
-//
-//        try {
-////            ClassLoader classLoader = getClass().getClassLoader();
-////            File inputFile = new File(classLoader.getResource("static/BhavCSV.csv").getFile());
-//            BufferedReader input = new BufferedReader(new InputStreamReader(csvFile.getInputStream()));
-//
-//            String line = null;
-//            boolean firstLine = true;
-//
-//            // Map to store column names and their respective indices
-//            Map<String, Integer> columnIndices = new HashMap<>();
-//            List<StockDto> results = new ArrayList<>();
-//
-//            // Read the first line (header) to get column indices
-//            if ((line = input.readLine()) != null) {
-//                String[] headerColumns = line.split(",");
-//
-//                // Map column names to their index in the header
-//                for (int i = 0; i < headerColumns.length; i++) {
-//                    columnIndices.put(headerColumns[i], i);
-//                }
-//            }
-//
-//            // Read the remaining lines and extract necessary data based on the column names
-//            while ((line = input.readLine()) != null) {
-//                String[] columns = line.split(",");
-//
-//                String isin = columns[columnIndices.get("ISIN")];  // ISIN
-//                String stockName = columns[columnIndices.get("FinInstrmNm")];  // FinInstrmNm
-//
-//
-//                BigDecimal openPrice = new BigDecimal(columns[columnIndices.get("OpnPric")]);  // OpenPrice
-//                BigDecimal highPrice = new BigDecimal(columns[columnIndices.get("HghPric")]);  // HighPrice
-//                BigDecimal lowPrice = new BigDecimal(columns[columnIndices.get("LwPric")]);  // LowPrice
-//                BigDecimal closePrice = new BigDecimal(columns[columnIndices.get("ClsPric")]);  // ClosePrice
-//
-//                PricesDto price = new PricesDto(openPrice,closePrice,highPrice,lowPrice);
-//
-//                Optional<Stock> existingStockOpt = stockRepository.findByStockIdAndRecordedAt(isin,LocalDate.now());
-//
-//                if (existingStockOpt.isPresent()) {
-//                    // If the stock exists, update if any values have changed
-//                    Stock existingStock = existingStockOpt.get();
-//
-//                    if (!existingStock.getStockName().equals(stockName) ||
-//                            !existingStock.getStockPrice().equals(price)) {
-//
-//                        existingStock.setStockName(stockName);
-//                        existingStock.setStockPrice(price);
-//                        stockRepository.save(existingStock); // Update the stock
-//                    }
-//                } else {
-//                    // If the stock does not exist, add it
-//                    Stock newStock = new Stock(null, isin, stockName, price,null,null,null);
-//                    stockRepository.save(newStock); // Save the new stock
-//                }
-//
-//            }
-//
-//            input.close();
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    @Transactional
+    public void readCsvFile(MultipartFile csvFile) {
+
+        try {
+
+            BufferedReader input = new BufferedReader(new InputStreamReader(csvFile.getInputStream()));
+
+            String line = null;
+            boolean firstLine = true;
+
+
+            Map<String, Integer> columnIndices = new HashMap<>();
+            List<StockDto> results = new ArrayList<>();
+
+
+            if ((line = input.readLine()) != null) {
+                String[] headerColumns = line.split(",");
+
+
+                for (int i = 0; i < headerColumns.length; i++) {
+                    columnIndices.put(headerColumns[i], i);
+                }
+            }
+
+
+            while ((line = input.readLine()) != null) {
+                String[] columns = line.split(",");
+
+                String isin = columns[columnIndices.get("ISIN")];  // ISIN
+                String stockName = columns[columnIndices.get("FinInstrmNm")];  // FinInstrmNm
+
+
+                BigDecimal openPrice = new BigDecimal(columns[columnIndices.get("OpnPric")]);  // OpenPrice
+                BigDecimal highPrice = new BigDecimal(columns[columnIndices.get("HghPric")]);  // HighPrice
+                BigDecimal lowPrice = new BigDecimal(columns[columnIndices.get("LwPric")]);  // LowPrice
+                BigDecimal closePrice = new BigDecimal(columns[columnIndices.get("ClsPric")]);  // ClosePrice
+
+                PricesDto price = new PricesDto(openPrice,closePrice,highPrice,lowPrice);
+
+                Stock newStock = new Stock(null, isin, stockName, price,null,null,null);
+                stockRepository.save(newStock); // Save the new stock
+
+
+            }
+
+            input.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
